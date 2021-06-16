@@ -7,13 +7,14 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import es.manuelgonzalez.proyectobarberia.R
 import es.manuelgonzalez.proyectobarberia.data.model.Review
+import es.manuelgonzalez.proyectobarberia.data.model.User
 import es.manuelgonzalez.proyectobarberia.databinding.AddReviewFragmentBinding
 import es.manuelgonzalez.proyectobarberia.utils.hideSoftKeyboard
 import es.manuelgonzalez.proyectobarberia.utils.viewBinding
 
 class AddReviewFragment : Fragment(R.layout.add_review_fragment) {
 
-    private var currentUserId: String = ""
+    private lateinit var currentUser: User
     private var newReviewId: String = ""
     private var currentIdDate: String = ""
     private val binding: AddReviewFragmentBinding by viewBinding {
@@ -28,13 +29,13 @@ class AddReviewFragment : Fragment(R.layout.add_review_fragment) {
             val result = bundle.getString("reviewKey")
             currentIdDate = result.toString()
         }
-        setupViews()
         observeViewModel()
+        setupViews()
     }
 
     private fun observeViewModel() {
         viewModel.currentUser.observe(viewLifecycleOwner, {
-            currentUserId = it.uid
+            currentUser = it
         })
         viewModel.newIdReview.observe(viewLifecycleOwner, {
             newReviewId = it.toString()
@@ -47,10 +48,11 @@ class AddReviewFragment : Fragment(R.layout.add_review_fragment) {
             viewModel.addReview(
                 Review(
                     newReviewId,
-                    currentUserId,
+                    currentUser.uid,
                     currentIdDate,
                     binding.ratingBar.rating + 0.1F,
-                    binding.txtReviewText.text.toString()
+                    binding.txtReviewText.text.toString(),
+                    currentUser.fullName
                 )
             )
             binding.lblReviewText.hideSoftKeyboard()

@@ -56,7 +56,6 @@ dependencies {
     //Firebase
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.firebase:firebase-firestore:23.0.1'
-    implementation 'com.google.firebase:firebase-storage-ktx:20.0.0'
     //Carga de imágenes
     implementation("io.coil-kt:coil:1.2.2")
     //Calendario

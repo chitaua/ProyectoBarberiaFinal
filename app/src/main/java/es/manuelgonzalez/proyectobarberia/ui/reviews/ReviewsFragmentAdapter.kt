@@ -31,7 +31,7 @@ class ReviewsFragmentAdapter : ListAdapter<Review, ReviewsFragmentAdapter.ViewHo
             review.run {
                 binding.lblDate.text = idDate.substringBefore(" ")
                 binding.lblReviewText.text = reviewText
-                binding.lblUserName.text = review.
+                binding.lblUserName.text = "$userName "
                 binding.ratingBar.rating = rating
             }
         }

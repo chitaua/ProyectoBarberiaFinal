@@ -29,8 +29,8 @@ class FirestoreDB {
             database.collection("users")
                 .document(user.uid)
                 .set(user)
-                .addOnSuccessListener { Log.w("Usuario", "Usuario añadido") }
-                .addOnFailureListener { Log.e("Usuario", "Usuario no añadido") }
+                .addOnSuccessListener { Log.w("addUser", "Usuario añadido") }
+                .addOnFailureListener { Log.e("addUser ", "Usuario no añadido") }
         }
 
         fun getUser(idUser: String): LiveData<User> {
@@ -49,10 +49,10 @@ class FirestoreDB {
                         it.get("admin") as Boolean,
                     )
                     mutableUser.value = user
-                    Log.i("Hola", user.toString())
+                    Log.w("getUser", "Usuario obtenido")
                 }
                 .addOnCanceledListener {
-                    Log.i("Adios", "Nada")
+                    Log.e("getUser", "No se ha obtenido el usuario")
                 }
 
             return mutableUser
@@ -62,58 +62,16 @@ class FirestoreDB {
             database.collection("users")
                 .document(firebaseAuth.uid!!)
                 .update("activeDate", activeDate)
-                .addOnSuccessListener { Log.w("Usuario", "Usuario añadido") }
-                .addOnFailureListener { Log.e("Usuario", "Usuario no añadido") }
+                .addOnSuccessListener { Log.w("changeActiveDateCurrentUser", "activeDate cambiada") }
+                .addOnFailureListener { Log.e("changeActiveDateCurrentUser", "activeDate no cambiada") }
         }
 
         fun changeActiveDateUser(idUser: String, activeDate: Boolean) {
             database.collection("users")
                 .document(idUser)
                 .update("activeDate", activeDate)
-                .addOnSuccessListener { Log.w("Usuario", "Usuario añadido") }
-                .addOnFailureListener { Log.e("Usuario", "Usuario no añadido") }
-        }
-
-        fun isAdminUser(): LiveData<Boolean> {
-            var mutableIsAdmin = MutableLiveData<Boolean>()
-
-            database.collection("users")
-                .document(firebaseAuth.uid.toString())
-                .get()
-                .addOnSuccessListener {
-                    var user = User(
-                        it.get("uid") as String,
-                        it.get("fullName") as String,
-                        it.get("email") as String,
-                        it.get("telephone") as String,
-                        it.get("activeDate") as Boolean,
-                        it.get("admin") as Boolean,
-                    )
-                    mutableIsAdmin.value = user.admin
-                }
-                .addOnCanceledListener {
-                    Log.i("Adios", "Nada")
-                }
-
-            return mutableIsAdmin
-        }
-
-        fun userHaveActiveDate(): MutableLiveData<Boolean> {
-            var mutableActiveDate = MutableLiveData<Boolean>()
-
-            database.collection("users")
-                .document(firebaseAuth.uid!!)
-                .get()
-                .addOnSuccessListener {
-                    var activeDate: Boolean = it.get("activeDate") as Boolean
-                    mutableActiveDate.value = activeDate
-
-                }
-                .addOnCanceledListener {
-                    Log.i("Adios", "Nada")
-                }
-
-            return mutableActiveDate
+                .addOnSuccessListener { Log.w("changeActiveDateUser", "activeDate cambiada") }
+                .addOnFailureListener { Log.e("changeActiveDateUser", "activeDate no cambiada") }
         }
 
 
@@ -121,7 +79,6 @@ class FirestoreDB {
         *                   Database photos                   *
         **************************************************** */
 
-        // TODO
         fun queryPhotos(): LiveData<List<Photo>> {
             var mutablePhotoList = MutableLiveData<List<Photo>>()
             database.collection("photo").get().addOnSuccessListener {
@@ -130,7 +87,7 @@ class FirestoreDB {
                     photoList.add(Photo(photo.get("id") as Long, photo.get("url") as String))
                     //photoList.add(photo.toObject(Photo::class.java))
                 }
-                Log.i("PhotoList", it.size().toString())
+                Log.w("queryPhotos", "Fotos conseguidas")
                 mutablePhotoList.value = photoList
             }
             return mutablePhotoList
@@ -144,16 +101,16 @@ class FirestoreDB {
             database.collection("dates")
                 .document(date.idDate)
                 .set(date)
-                .addOnSuccessListener { Log.w("Date", "Date añadido") }
-                .addOnFailureListener { Log.e("Date", "Date no añadido") }
+                .addOnSuccessListener { Log.w("addDate", "Date añadida") }
+                .addOnFailureListener { Log.e("addDate", "Date no añadida") }
         }
 
         fun deleteDate(idDate: String) {
             database.collection("dates")
                 .document(idDate)
                 .delete()
-                .addOnSuccessListener { Log.w("Date", "Date añadido") }
-                .addOnFailureListener { Log.e("Date", "Date no añadido") }
+                .addOnSuccessListener { Log.w("deleteDate", "Date borrada") }
+                .addOnFailureListener { Log.e("deleteDate", "Date no borrada") }
         }
 
         fun getActiveDate(user: User): LiveData<Date> {
@@ -207,8 +164,6 @@ class FirestoreDB {
                         it.get("dayDate") as String,
                         it.get("hourDate") as String,
                     )
-
-                    Log.i("Lista de fechas filtradas", date.toString())
                     mutableDate.value = date
                 }
             return mutableDate
@@ -233,7 +188,7 @@ class FirestoreDB {
                             )
                         }
                     }
-                    Log.i("Lista de fechas filtradas", datesList.toString())
+                    Log.i("Lista de citas filtradas", datesList.toString())
                     mutableDateList.value = datesList
                 }
             return mutableDateList
@@ -264,7 +219,6 @@ class FirestoreDB {
                         )
                     }
                     dateTimeList.sort()
-                    Log.i("Listado weno", dateTimeList.toString())
                     for (dateTime in dateTimeList) {
                         for (date in it) {
                             var pattern = ""
@@ -278,8 +232,6 @@ class FirestoreDB {
                                 date.id,
                                 DateTimeFormatter.ofPattern(pattern)
                             )
-                            Log.i("Listado weno2", dateTime.toString())
-                            Log.i("Listado weno3", dateDayTime.toString())
                             if (dateTime.isEqual(dateDayTime) && date.get("idUser") as String == idUser && dateDayTime.isBefore(
                                     nowDayTime
                                 )
@@ -296,11 +248,7 @@ class FirestoreDB {
                         }
 
                     }
-
-                    Log.i("Listado", datesList.toString())
-                    Log.i("Listado", dateTimeList.toString())
                     mutableDateList.value = datesList.asReversed()
-
                 }
             return mutableDateList
         }
@@ -329,7 +277,6 @@ class FirestoreDB {
                         )
                     }
                     dateTimeList.sort()
-                    Log.i("Listado weno", dateTimeList.toString())
                     for (dateTime in dateTimeList) {
                         for (date in it) {
                             var pattern = ""
@@ -361,9 +308,6 @@ class FirestoreDB {
                         }
 
                     }
-
-                    Log.i("Listado", datesList.toString())
-                    Log.i("Listado", dateTimeList.toString())
                     mutableDateList.value = datesList.asReversed()
                 }
             return mutableDateList
@@ -384,7 +328,6 @@ class FirestoreDB {
                     var idReview: Long = 0
                     for (review in it) {
                         idReview = (review.get("idReview") as String).toLong()
-                        Log.i("add2", review.toString())
                     }
                     if (it.isEmpty) {
                         mutableReviewId.value = 1
@@ -399,8 +342,8 @@ class FirestoreDB {
             database.collection("reviews")
                 .document(review.idReview)
                 .set(review)
-                .addOnSuccessListener { Log.w("Review", "Review añadido") }
-                .addOnFailureListener { Log.e("Review", "Review no añadido") }
+                .addOnSuccessListener { Log.w("addReview", "Review añadida") }
+                .addOnFailureListener { Log.e("addReview", "Review no añadida") }
         }
 
         fun queryReviews(): LiveData<List<Review>> {
@@ -427,7 +370,6 @@ class FirestoreDB {
                         )
                     }
                     dateTimeList.sort()
-                    Log.i("Listado weno", dateTimeList.toString())
                     for (dateTime in dateTimeList) {
                         for (review in it) {
                             var pattern = ""
@@ -441,8 +383,6 @@ class FirestoreDB {
                                 review.get("idDate") as String,
                                 DateTimeFormatter.ofPattern(pattern)
                             )
-                            Log.i("Listado weno2", dateTime.toString())
-                            Log.i("Listado weno3", dateDayTime.toString())
                             if (dateTime.isEqual(dateDayTime) && dateDayTime.isBefore(
                                     nowDayTime
                                 )
@@ -454,6 +394,7 @@ class FirestoreDB {
                                         review.get("idDate") as String,
                                         (review.get("rating") as Double).toFloat(),
                                         review.get("reviewText") as String,
+                                        review.get("userName") as String
                                     )
                                 )
                             }
@@ -461,8 +402,6 @@ class FirestoreDB {
 
                     }
 
-                    Log.i("Listado FINAL 1", reviewsList.toString())
-                    Log.i("Listado FINAL 2", dateTimeList.toString())
                     mutableReviewList.value = reviewsList.asReversed()
                 }
             return mutableReviewList
@@ -483,6 +422,7 @@ class FirestoreDB {
                                     review.get("idDate") as String,
                                     (review.get("rating") as Double).toFloat(),
                                     review.get("reviewText") as String,
+                                    review.get("userName") as String
                                 )
                             )
                         }
@@ -495,19 +435,6 @@ class FirestoreDB {
                 }
             return mutableReview
         }
-
-        fun haveReview(date: Date): LiveData<Boolean> {
-            var mutableHaveReview: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
-            database.collection("reviews")
-                .get()
-                .addOnSuccessListener {
-                    for (dateIt in it)
-                        if (dateIt.get("idDate") as String == date.idDate)
-                            mutableHaveReview.value = true
-                }
-            return mutableHaveReview
-        }
-
     }
 
 }

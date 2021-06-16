@@ -32,6 +32,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textColor="@color/black"
+            android:textStyle="bold"
             tools:text="18 jun. 2021" />
 
         <TextView
@@ -40,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textColor="@color/black"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="@+id/lblDate"
             app:layout_constraintTop_toBottomOf="@+id/lblDate"
             tools:text="Manuel González Cote" />
@@ -52,6 +54,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="8dp"
             android:textColor="@color/black"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

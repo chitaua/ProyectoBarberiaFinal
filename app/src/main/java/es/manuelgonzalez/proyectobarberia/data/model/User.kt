@@ -1,7 +1,5 @@
 package es.manuelgonzalez.proyectobarberia.data.model
 
-import java.util.*
-
 data class User(
     val uid: String,
     val fullName: String,

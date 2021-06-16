@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/mnuDates"
+            android:icon="@drawable/ic_baseline_calendar_today_24"
+            android:title="@string/main_nav_mnuDates" />
+        <item
+            android:id="@+id/mnuHistoryDates"
+            android:icon="@drawable/ic_baseline_history_24"
+            android:title="@string/main_nav_mnuHistoryDates" />
+        <item
+            android:id="@+id/mnuReviews"
+            android:icon="@drawable/ic_baseline_rate_review_24"
+            android:title="@string/main_nav_mnuReviews" />
+        <item
+            android:id="@+id/mnuGallery"
+            android:icon="@drawable/ic_baseline_photo_library_24"
+            android:title="@string/main_nav_mnuGallery" />
+        <item
+            android:id="@+id/mnuAbout"
+            android:icon="@drawable/ic_baseline_people_24"
+            android:title="@string/main_nav_mnuAbout" />
+        <item
+            android:id="@+id/mnuLogOut"
+            android:icon="@drawable/ic_baseline_power_settings_new_24"
+            android:title="@string/main_nav_mnuLogOut" />
+    </group>
+</menu>
